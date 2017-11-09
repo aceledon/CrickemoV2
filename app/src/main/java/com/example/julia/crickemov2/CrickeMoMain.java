@@ -48,7 +48,8 @@ public class CrickeMoMain extends AppCompatActivity
         GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        ResultCallback<Status> {
 
     private static final String TAG = CrickeMoMain.class.getSimpleName();
     //Location updates every 5 seconds
@@ -73,6 +74,16 @@ public class CrickeMoMain extends AppCompatActivity
     private Circle geoFenceLimits;
 
     private PendingIntent geoFencePendingIntent;
+    private PendingIntent createGeoFencePendingIntent() {
+        Log.d(TAG, "createGeofencePendingIntent");
+        if (geoFencePendingIntent != null) {
+            return geoFencePendingIntent;
+        }
+
+        Intent intent = new Intent(this, GeofenceTransitionService.class);
+        return PendingIntent.getService(
+                this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,16 +306,6 @@ public class CrickeMoMain extends AppCompatActivity
         }
     }
 
-    private PendingIntent createGeofencePendingIntent() {
-        Log.d(TAG, "createGeofencePendingIntent");
-        if (geoFencePendingIntent != null) {
-            return geoFencePendingIntent;
-        }
-
-        Intent intent = new Intent(this, GeofenceTransitionService.class);
-        return PendingIntent.getService(this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
     //Add the created GeofenceRequest to the device's monitoring list
     private void addGeofence(GeofencingRequest request) {
         Log.d(TAG, "addGeofence");
@@ -312,7 +313,7 @@ public class CrickeMoMain extends AppCompatActivity
             LocationServices.GeofencingApi.addGeofences(
                     googleApiClient,
                     request,
-                    createGeofencePendingIntent()
+                    createGeoFencePendingIntent()
             ).setResultCallback(this);
     }
 
@@ -358,7 +359,7 @@ public class CrickeMoMain extends AppCompatActivity
         Log.d(TAG, "clearGeofence()");
         LocationServices.GeofencingApi.removeGeofences(
                 googleApiClient,
-                createGeofencePendingIntent()
+                createGeoFencePendingIntent()
         ).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
