@@ -9,26 +9,27 @@
 
     <!--Google Map Fragment-->
     <LinearLayout
+        android:id="@+id/textviews"
         android:layout_width="fill_parent"
-        android:layout_height="42dp"
-        android:layout_weight="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="8dp">
 
         <TextView
             android:id="@+id/lat"
-            android:layout_width="0.5"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Lat: "
+            tools:text="Lat: " />
 
         <TextView
-            android:id="@+id/long"
-            android:layout_width="0.5"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="TextView" />
+            android:id="@+id/lon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Long: " />
     </LinearLayout>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
